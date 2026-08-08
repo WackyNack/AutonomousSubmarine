@@ -1,0 +1,96 @@
+#include "../OpticalSensorFirmware/SonarSensorHub.h"
+#include "../ObjectLogic/GODS_EYE.h"
+#include "../WaypointSystemHUAC/WaypointSystemHUAC.h"
+#include <iostream>
+#include <thread>
+#include <chrono>
+
+void ExecuteAutonomyDecisionEngine(const GODS_EYE& perception, WaypointSystemHUAC& spatialMap, const Vector3& currentSubPos) {
+	constexpr float COLLISION_THRESHOLD = 0.50f;
+
+
+	float clearanceLeft = perception.GetPerimeterClearance(SonarChannel::Stationary_Left);
+	float clearanceFront = perception.GetPerimeterClearance(SonarChannel::Stationary_Front);
+	float clearanceRight = perception.GetPerimeterClearance(SonarChannel::Stationary_Right);
+
+
+	if (perception.CheckEmergencyAscent()) {
+		std::cout << "[FAILSAFE ACTIVATED] HARD HULL LEAK FLAG ENGAGED. OVERRIDING MISSION FOR ASCENT.\n";
+		spatialMap.PushEntity(SpatialObjectType::Mission_WAYPOINT, Vector3(currentSubPos.x, currentSubPos.y, 0.0f), "Emergency Surface Goal");
+			
+	}
+
+	if (clearanceFront < COLLISION_THRESHOLD) {
+		std::cout << "[WARNING] COLLISION THREAT AHEAD\n" "Clearance:" << clearanceFront << "m. RECALCULATING ROUTES...\n";
+	
+		Vector3 hazardEstimation = currentSubPos + Vector3(0.0f, clearanceFront, 0.0f);
+		spatialMap.PushEntity(SpatialObjectType::Dynamic_OBSTACLE, hazardEstimation, "Front Perimeter Obstacle Wall", 0.50f);
+
+		if (clearanceLeft > clearanceRight) {
+			std::cout << "[BRAIN] SWERVING LEFT (Clearance:" << clearanceLeft << "m). RECALCULATING POSITION...\n";
+		}
+		else {
+			std::cout << "[BRAIN] SWERVING RIGHT (Clearance:" << clearanceRight << "m). RECALCULATING POSITION...\n";
+			}
+		}
+	else {
+		std::cout << "[STATUS] FRONT PATH CLEAR (" << clearanceFront << "m) CONTINUING NAVIGATION...\n";
+
+		
+	
+	}
+}
+
+int main() {
+
+	SonarSensorHub hardwareHub;
+	GODS_EYE perceptionEngine;
+	WaypointSystemHUAC spatialMAP;
+
+	std::cout << "=======================================================================================\n";
+	std::cout << "                          PREPARING AUTONOMOUS ROBOTICS                                \n";
+	std::cout << "=======================================================================================\n";
+
+	hardwareHub.initialization();
+
+	Vector3 PlacementSubPosition{ 0.0f, 0.0f, -1.0f };
+
+	spatialMAP.PushEntity(SpatialObjectType::Mission_WAYPOINT, Vector3{15.0f, 0.0f, -1.0f}, "Target Destination Marker");
+	for (int executionCycle = 1; executionCycle <= 10; ++executionCycle) {
+		std::cout << "SUBMARINE CURRENT TICK" << executionCycle << "\n";
+
+
+		hardwareHub.update();
+
+			perceptionEngine.IngestTelemetry(SonarChannel::Stationary_Right, hardwareHub.recent_distance[2]);
+			perceptionEngine.IngestTelemetry(SonarChannel::Stationary_Front, hardwareHub.recent_distance[1]);
+			perceptionEngine.IngestTelemetry(SonarChannel::Stationary_Left, hardwareHub.recent_distance[0]);
+
+			float simulatedPanServoAngle = -20.0f + (executionCycle * 4.0f);
+			perceptionEngine.IngestTelemetry(SonarChannel::GIMBAL_MSS, 2.4f, simulatedPanServoAngle, 0.0f);
+
+			bool mavLinkSignal_LEAKS = (executionCycle == 8);
+			perceptionEngine.ExecutePerceptionPipeline(mavLinkSignal_LEAKS);
+
+			if ((executionCycle % 3) == 0) {
+				std::cout << "Logging Submarine's periodic breadcrumbs...\n";
+			}
+
+			PlacementSubPosition.x += 1.5f;
+			spatialMAP.PushEntity(SpatialObjectType::PATH_BREADCRUMB, PlacementSubPosition, "Breadrumb Trail Marker");
+			std::cout << "[LOG] Submarine position logged at (" << PlacementSubPosition.x << "," << PlacementSubPosition.y << "," << PlacementSubPosition.z;") \n";
+
+			ExecuteAutonomyDecisionEngine(perceptionEngine, spatialMAP, PlacementSubPosition);
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(60));
+
+
+
+		}
+	
+	std::cout << "[LOG] MISSION LOOP COMPLETE...\n";
+
+		return 0;
+}
+ 
+

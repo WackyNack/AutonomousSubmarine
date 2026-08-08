@@ -1,0 +1,10 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="AutonomousSubmarine/AutonomousSubmarine.vcxproj" Id="c6f654b4-874a-4d9d-83df-2e634712ae25" />
+  <Project Path="ObjectLogic/ObjectLogic.vcxproj" Id="c3d4cbb0-4186-4120-99c6-cd70a8ce11ed" />
+  <Project Path="OpticalSensorFirmware/OpticalSensorFirmware.vcxproj" Id="38d90f2a-4de4-4417-bb4d-fec829af8ef2" />
+  <Project Path="WaypointSystemHUAC/WaypointSystemHUAC.vcxproj" Id="3e93a7ca-e5c0-4e10-b1cc-f805e3a12c14" />
+</Solution>
