@@ -139,9 +139,6 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ObjectLogic\ObjectLogic.vcxproj">
       <Project>{c3d4cbb0-4186-4120-99c6-cd70a8ce11ed}</Project>
     </ProjectReference>

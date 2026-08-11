@@ -86,7 +86,7 @@ int main() {
 
 
 
-		}
+	}
 	
 	std::cout << "[LOG] MISSION LOOP COMPLETE...\n";
 

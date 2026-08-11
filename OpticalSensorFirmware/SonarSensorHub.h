@@ -14,7 +14,11 @@ private:
     int active_sensor_index = 0;
     const int SENSOR_TOTAL = 3;
     unsigned long recent_ping_time = 0;
+<<<<<<< HEAD
     const unsigned long PING_INTERVAL_MS = 12;
+=======
+    const unsigned long PING_INTERVAL_MS = 40;
+>>>>>>> da8137056f46e7fcfa04c7dc739e066ca089ddec
 
 public:
     SonarSensorHub() noexcept = default;

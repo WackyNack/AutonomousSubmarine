@@ -15,6 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="AutonomousSubmarine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+>>>>>>> da8137056f46e7fcfa04c7dc739e066ca089ddec
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
