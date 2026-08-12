@@ -11,11 +11,7 @@ enum class SpatialObjectType : uint8_t {
 
 	Mission_WAYPOINT,
 	Dynamic_OBSTACLE,
-<<<<<<< HEAD
 	Sensor_Target_ROI, // region of interest
-=======
-	Sensor_Target_ROI // region of interest
->>>>>>> da8137056f46e7fcfa04c7dc739e066ca089ddec
 	PATH_BREADCRUMB //digital marker tracking sub
 };
 

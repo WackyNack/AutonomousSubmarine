@@ -26,12 +26,9 @@ struct Vector3 {
 };
 
 // Things to note:
-<<<<<<< HEAD
 // The "1e-6f" is an epsilon that is meant to keep the code from crashing in case it decides to calulate a distance of 0 (yknow what happens when you do x/0)
-=======
 // The "1e-6f" is an epsilon that is meant to keep the code from crashing
 // in case it decides to calulate a distance of 0 (yknow what happens when you do x/0)
->>>>>>> da8137056f46e7fcfa04c7dc739e066ca089ddec
 // no discard will warn in case a function doesn't have a variable assigned
 // constexpr will calcualte vectors and math during compile time
 // const noexcept will prevent crashes

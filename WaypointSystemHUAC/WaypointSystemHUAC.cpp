@@ -38,8 +38,9 @@ std::vector<SpatialEntity> WaypointSystemHUAC::GetEntitiesByType(SpatialObjectTy
 		if (entity.type == type) {
 			filtered.push_back(entity);
 		}
-		return filtered;
 	}
+	return filtered;
+
 }
 
 std::optional<SpatialEntity> WaypointSystemHUAC::ClosestThreat(const Vector3& subPosition, float evaluationRadius) const noexcept {
