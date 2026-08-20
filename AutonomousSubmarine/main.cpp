@@ -80,9 +80,6 @@ int main() {
 			perceptionEngine.IngestTelemetry(SonarChannel::Stationary_Front, hardwareHub.recent_distance[1]);
 			perceptionEngine.IngestTelemetry(SonarChannel::Stationary_Left, hardwareHub.recent_distance[0]);
 
-			float simulatedPanServoAngle = -20.0f + (executionCycle * 4.0f);
-			perceptionEngine.IngestTelemetry(SonarChannel::GIMBAL_MSS, 2.4f, simulatedPanServoAngle, 0.0f);
-
 			bool mavLinkSignal_LEAKS = (executionCycle == 8);
 			perceptionEngine.ExecutePerceptionPipeline(mavLinkSignal_LEAKS);
 
